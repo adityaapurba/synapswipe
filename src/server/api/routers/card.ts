@@ -14,11 +14,16 @@ export const cardRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.card.create({
+      const card = await ctx.db.card.create({
         data: {
           type: input.type,
           content: input.content,
           deckId: input.deckId,
+        },
+      });
+      await ctx.db.cardProgress.create({
+        data: {
+          cardId: card.id,
         },
       });
     }),
@@ -32,5 +37,23 @@ export const cardRouter = createTRPCRouter({
         },
       });
       return cards;
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        content: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.card.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          content: input.content,
+        },
+      });
     }),
 });

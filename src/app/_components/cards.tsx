@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import { currentDeckAtom } from "~/store/deck";
 import { api } from "~/trpc/react";
 import { CreateCard } from "./create-card";
+import Link from "next/link";
 
 export function Cards() {
   // const allCards
@@ -33,8 +34,11 @@ export function Cards() {
 
   return (
     <div className="flex flex-col gap-4">
-      All Cards:
-      {data?.map((card) => <div key={card.id}>{card.content}</div>)}
+      {/* All Cards:
+      {data?.map((card) => <div key={card.id}>{card.content}</div>)} */}
+      <Link href={"/revise/" + currentDeck?.id}>
+        <Button variant="outline">Revise Cards</Button>
+      </Link>
       <Button variant="outline" onClick={() => setShowCreateCard(true)}>
         Add New Card
       </Button>
